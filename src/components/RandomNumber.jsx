@@ -2,13 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-const RandomNumber = ({ number, isSelected }) => {
+const RandomNumber = ({ id, number, isDisabled, onPress }) => {
   const handlePress = () => {
-    console.log(number);
+    console.log(id,'ss');
+    if (!isDisabled) {
+      onPress(id);
+    }
   };
   return (
     <TouchableOpacity onPress={handlePress}>
-      <Text style={[styles.random, isSelected && styles.selected]}>{number}</Text>
+      <Text style={[styles.random, isDisabled && styles.disabled]}>
+        {number}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -23,14 +28,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxHeight: 50,
   },
-  selected: {
+  disabled: {
     opacity: 0.3,
-  }
+  },
 });
 
 const propTypes = {
+  id: PropTypes.number.isRequired,
   number: PropTypes.number.isRequired,
-  isSelected: PropTypes.bool.isRequired
+  isDisabled: PropTypes.bool.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
-export default RandomNumber;
+export default React.memo(RandomNumber);
